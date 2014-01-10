@@ -9,33 +9,74 @@
 
 // 3. Ability to restart game: Instead of having to refresh the webpage, when the game finishes, ask if they want to play again (using the confirm dialog box).
 
-// var randomNumber1 = Math.floor((Math.random()*20) + 1);
-// var randomNumber2 = Math.floor((Math.random()*20) + 1);
+var player1 = 0;
+var player2 = 1;
+var lives = [3, 3];
+var turn = player1;
 
+var num1
+var num2
+var opIndex = 0;
+var operators = ["+", "-", "*", "/"];
+window.onload = function() {
+	gameLoop();
+}
 
-
-var player1 = "Player1";
-var player2 = "Player2";
-var number = 5;
-var equationAnswer = 10;
-var life = 3;
-var score = 0;
-equation = parseInt();
-
-// while (life > 0) {
-	var equation = prompt("What is " + number + "+" + number + " ?");
-	// debugger;
-	if (equationAnswer == equation) {
-		score += 1;
-	} else { 
-		score -= 1;
+function minusLife() {
+	if (turn == player1) {
+		lives[player1] -= 1;
+	}else{
+		lives[player2] -= 1;
 	}
+}
 
-console.log(score);
-console.log(life);
+function changeTurn() {
+	if (turn == player1) {
+		turn = player2;
+	} else {
+		turn = player1;
+	}
+}
 
+function randomNumbers() {
+	num1 = Math.floor((Math.random()*20)+1);
+	num2 = Math.floor((Math.random()*20)+1);
+	opIndex = Math.floor((Math.random()*4));
+}
 
+function questionAnswer() {
+	return prompt("Player" + (turn + 1) + ":" + " what is " + num1 + " " + operators[opIndex] + " " + num2);
+}
 
+function correct(answer) {
+	if ( ( (num1 + num2) == answer) && (opIndex == 0) ) {
+		return true;
+	} else if ( ( (num1 - num2) == answer) && (opIndex == 1) ) {
+		return true;
+	} else if ( ( (num1 * num2) == answer) && (opIndex == 2) ) {
+		return true;
+	} else if ( ( (num1 / num2) == answer) && (opIndex == 3) ) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
+function gameLoop() {
+	while(lives[player1] > 0 && lives[player2] > 0) {
+		randomNumbers();
+		var answer = questionAnswer();
+
+		if (correct(answer)) {
+			alert("You're a math whiz!");
+		} else {
+			minusLife();
+			alert("Wrong! You only have " + lives[turn] + " lives left");
+		}
+
+		changeTurn();
+	}
+}
 
 
 
